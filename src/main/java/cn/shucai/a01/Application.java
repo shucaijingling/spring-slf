@@ -1,11 +1,13 @@
-package cn.shucai;
+package cn.shucai.a01;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.Map;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, IOException {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
         /*
           1.什么是BeanFactory
@@ -41,5 +43,34 @@ public class Application {
         System.out.println(context.getMessage("hi", null, Locale.CHINA));
         System.out.println(context.getMessage("hi", null, Locale.ENGLISH));
         System.out.println(context.getMessage("hi", null, Locale.JAPANESE));
+
+        /**
+         * resources
+         */
+        //单个resource
+        Resource[] resources = context.getResources("classpath:application.properties");
+        for (Resource resource : resources) {
+            System.out.println(resource);
+        }
+
+        //多个resource
+        Resource[] resources2 = context.getResources("classpath*:META-INF/spring.factories");
+        for (Resource resource : resources2) {
+            System.out.println(resource);
+        }
+
+        /**
+         * getEnvironment
+         */
+        System.out.println(context.getEnvironment().getProperty("java_home"));
+        System.out.println(context.getEnvironment().getProperty("server.port"));
+
+
+        /**
+         * 发布事件
+         */
+//        context.publishEvent(new UserRegisteredEvent(context));
+
+        context.getBean(Component2.class).register();
     }
 }
