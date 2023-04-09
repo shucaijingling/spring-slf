@@ -85,7 +85,7 @@ public class A02Application {
 
     @Configuration
     static class WebConfig {
-        //1. 创建tomcat webServer 服务器
+        //1. 创建tomcat内嵌 servlet
         @Bean
         public ServletWebServerFactory servletWebServerFactory() {
             return new TomcatServletWebServerFactory();
