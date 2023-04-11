@@ -15,7 +15,7 @@ public class Bean1 {
     private Bean2 bean2;
 
     @Autowired
-    public void getBean2(Bean2 bean2) {
+    public void setBean2(Bean2 bean2) {
         log.debug("@Autowired 生效：{}", bean2);
         this.bean2 = bean2;
     }
@@ -44,5 +44,14 @@ public class Bean1 {
     @PreDestroy
     public void destroy() {
         log.debug("@PreDestroy 生效");
+    }
+
+    @Override
+    public String toString() {
+        return "Bean1{" +
+                "bean2=" + bean2 +
+                ", bean3=" + bean3 +
+                ", home='" + home + '\'' +
+                '}';
     }
 }
