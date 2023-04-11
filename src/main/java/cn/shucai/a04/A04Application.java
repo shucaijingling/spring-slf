@@ -1,6 +1,7 @@
 package cn.shucai.a04;
 
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor;
 import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.ContextAnnotationAutowireCandidateResolver;
 import org.springframework.context.support.GenericApplicationContext;
@@ -16,6 +17,7 @@ public class A04Application {
         context.registerBean("bean1", Bean1.class);
         context.registerBean("bean2", Bean2.class);
         context.registerBean("bean3", Bean3.class);
+        context.registerBean("bean4", Bean4.class);
 
         //添加后置处理器才能处理解析对应注解的操作
         context.getDefaultListableBeanFactory().setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());//解析@Value注解
@@ -23,8 +25,12 @@ public class A04Application {
 
         context.registerBean(CommonAnnotationBeanPostProcessor.class);// @Resource @PostConstruct @PreDestroy
 
+        ConfigurationPropertiesBindingPostProcessor.register(context.getDefaultListableBeanFactory()); //注册ConfigurationPropertiesBindingPostProcessor
+
         //初始化容器
         context.refresh();//执行BeanFactory后置处理器 ， 添加bean后置处理器， 初始化所有单例
+
+        System.out.println(context.getBean(Bean4.class));
 
         //销毁容器
         context.close();
